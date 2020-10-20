@@ -1,10 +1,7 @@
-//1151858733:AAGjr5h7W9BIDtrnn9ZJT0Y8sIQ5hwtkgic
-//t.me/MotherVersion5Bot   - ссылка на бот
-
 const { Telegraf, Markup } = require("telegraf");
 const { keyboard } = require('./menu')
 
-const bot = new Telegraf("1151858733:AAGjr5h7W9BIDtrnn9ZJT0Y8sIQ5hwtkgic");
+const bot = new Telegraf(process.env.BOT_TOKEN);
 
 const inlineMessageRatingKeyboard = Markup.inlineKeyboard([
   Markup.callbackButton('👍', 'like'),

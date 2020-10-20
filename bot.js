@@ -1,53 +1,134 @@
 //1151858733:AAGjr5h7W9BIDtrnn9ZJT0Y8sIQ5hwtkgic
 //t.me/MotherVersion5Bot   - ссылка на бот
 
-const { Telegraf } = require("telegraf");
+const { Telegraf, Markup } = require("telegraf");
+const { keyboard } = require('./menu')
 
 const bot = new Telegraf("1151858733:AAGjr5h7W9BIDtrnn9ZJT0Y8sIQ5hwtkgic");
+
+const inlineMessageRatingKeyboard = Markup.inlineKeyboard([
+  Markup.callbackButton('👍', 'like'),
+  Markup.callbackButton('👎', 'dislike')
+]).extra();
 
 const MY_SCHEDULE = [
   {
     dayName: "Monday",
     lessons: [
-      'Math, time: 8:00 am, Mr Marshalkovsky, room #404',
-      "PE, time: 10:00 am, Mr Spostingsky, room #101",
-      "Physics, time: 12:00 pm, Mr Kovalchuk, room #202"
+      {
+        name: "Math",
+        time: "8:00",
+        professor: "Mr Greek",
+        room: 404,
+      },
+      {
+        name: "Geometry",
+        time: "10:00",
+        professor: "Mr Khristoforidi",
+        room: 406,
+      },
+      {
+        name: "Biology",
+        time: "12:00",
+        professor: "Ms Aiko",
+        room: 405,
+      },
     ],
     dayNumber: 1,
   },
   {
     dayName: "Tuesday",
     lessons: [
-      "Geometry, time: 8:00 am, Mr Lewandowski, room #103",
-      "JS, time: 10:00 am, Mr Baklawev, room #104",
-      "English, time: 12:00 pm, Mr Leondardo, room #107",
+      {
+        name: "Math",
+        time: "8:00",
+        professor: "Mr Greek",
+        room: 404,
+      },
+      {
+        name: "Geometry",
+        time: "10:00",
+        professor: "Mr Khristoforidi",
+        room: 406,
+      },
+      {
+        name: "Biology",
+        time: "12:00",
+        professor: "Ms Aiko",
+        room: 405,
+      },
     ],
     dayNumber: 2,
   },
   {
     dayName: "Wednesday",
     lessons: [
-      "Kyrgyz, time: 8:00 am, Mr Archin, room #215",
-      "Science, time: 10:00 am, Ms Milan, room #116",
-      "Python, time: 12:00 pm, Mr Adaniyar, room #102",
+      {
+        name: "Math",
+        time: "8:00",
+        professor: "Mr Greek",
+        room: 404,
+      },
+      {
+        name: "Geometry",
+        time: "10:00",
+        professor: "Mr Khristoforidi",
+        room: 406,
+      },
+      {
+        name: "Biology",
+        time: "12:00",
+        professor: "Ms Aiko",
+        room: 405,
+      },
     ],
     dayNumber: 3,
   },
   {
     dayName: "Thursday",
     lessons: [
-      "Math, time: 8:00 am, Mr Leondardo, room #107",
-      "PE, time: 10:00 am, Mr Leondardo, room #107",
-      "Physics, time: 12:00 pm, Mr Leondardo, room #107",
-      ],
+      {
+        name: "Math",
+        time: "8:00",
+        professor: "Mr Greek",
+        room: 404,
+      },
+      {
+        name: "Geometry",
+        time: "10:00",
+        professor: "Mr Khristoforidi",
+        room: 406,
+      },
+      {
+        name: "Biology",
+        time: "12:00",
+        professor: "Ms Aiko",
+        room: 405,
+      },
+    ],
     dayNumber: 4,
   },
   {
     dayName: "Friday",
     lessons: [
-      "Arch, time: 12:00 pm, Mr Leondardo, room #107",
-      "Design, time: 12:00 pm, Mr Leondardo, room #107", 
-      "Sociology, time: 12:00 pm, Mr Leondardo, room #107",
+      {
+        name: "Math",
+        time: "8:00",
+        professor: "Mr Greek",
+        room: 404,
+      },
+      {
+        name: "Geometry",
+        time: "10:00",
+        professor: "Mr Khristoforidi",
+        room: 406,
+      },
+      {
+        name: "Biology",
+        time: "12:00",
+        professor: "Ms Aiko",
+        room: 405,
+      },
     ],
     dayNumber: 5,
   },
@@ -65,14 +146,16 @@ const jokesArr = [
 const commands = [
   "/start - bot launch",
   "/cmds - bot's opportunities",
-  "/info - bot's infromation", 
-  "/joke - bot's jokes", 
-  "/schedule - bot's schedule assistance", 
-  "/help - bot's support"];
+  "/info - bot's infromation",
+  "/joke - bot's jokes",
+  "/schedule - bot's schedule assistance",
+  "/help - bot's support",
+];
 
 bot.start((ctx) => {
   ctx.reply(`Welcome, ${ctx.from.first_name} ${ctx.from.last_name}
-    How can I help you?`);
+    How can I help you?`, keyboard);
+  ctx.reply(keyboard);
 });
 
 bot.command("cmds", (ctx) => {
@@ -80,7 +163,7 @@ bot.command("cmds", (ctx) => {
     return `\n${item}`;
   });
 
-  ctx.reply(`${cmds}`);
+  
 });
 
 bot.command("info", (ctx) => {
@@ -107,8 +190,8 @@ bot.command("schedule", (ctx) => {
 
   ctx.reply(`
     ${schedule.dayName} 😱😱😱
-    Your schedule: ${schedule.lessons.map((item) => {
-      return `\n${item}`;
+    \nYour schedule: ${schedule.lessons.map((lesson) => {
+      return `\n${lesson.name}, ${lesson.time}, ${lesson.professor}, ${lesson.room}`;
     })}
     `);
 
@@ -118,18 +201,33 @@ bot.command("schedule", (ctx) => {
 
   for (let i = 0; i <= schedule.lessons.length; i++) {
     if (fullTime !== schedule.lessons[i]) {
-      return ctx.reply(`It's ${fullTime}, you are late now`)
+      return ctx.reply(`It's ${fullTime}, you are late now`);
     }
   }
-
 });
 
 bot.command("help", (ctx) => {
   ctx.reply("Вы находитесь в разделе помощь");
 });
 
+
+
+bot.hears('Помощь', (ctx) => {
+  ctx.reply('Раздел помощи')
+})
+bot.hears('О нас 🙋🏼‍♂️', (ctx) => {
+  ctx.reply('About us')
+})
+
+bot.action('like', (ctx) => ctx.reply('🎉 Awesome! 🎉'))
+bot.action('dislike', (ctx) => ctx.reply('okey'))
+
+bot.on('message', (ctx) => {
+  ctx.telegram.sendMessage(ctx.from.id, "Like?", inlineMessageRatingKeyboard);
+})
+
 function startBot() {
-  bot.launch();
+  bot.startPolling()
   console.log("bot is started");
 }
 
